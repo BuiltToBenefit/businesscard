@@ -26,10 +26,19 @@
     padding:40px 32px 32px;
     box-shadow:0 1px 2px rgba(0,0,0,.03),0 12px 40px -12px rgba(0,0,0,.12);
   }
+  .head{display:flex;align-items:flex-start;gap:16px;margin-bottom:22px;}
   .avatar{
     width:96px;height:96px;border-radius:50%;object-fit:cover;
-    margin-bottom:22px;border:1px solid var(--hair);
+    border:1px solid var(--hair);flex:none;
   }
+  .share{
+    margin-top:6px;display:inline-flex;align-items:center;gap:7px;
+    background:none;border:1px solid var(--hair);border-radius:999px;
+    padding:9px 14px;font-family:inherit;font-size:13px;font-weight:500;
+    color:var(--ink);cursor:pointer;letter-spacing:-.01em;line-height:1;
+  }
+  .share:active{opacity:.6;}
+  .share svg{width:15px;height:15px;}
   h1{font-size:28px;font-weight:600;letter-spacing:-.02em;line-height:1.1;margin-bottom:6px;}
   .role{color:var(--muted);font-size:15px;line-height:1.4;margin-bottom:26px;}
   .role b{color:var(--ink);font-weight:500;}
@@ -50,17 +59,10 @@
     font-family:inherit;cursor:pointer;letter-spacing:-.01em;
   }
   .save:active{opacity:.8;}
-  .qrwrap{margin-top:22px;display:flex;flex-direction:column;align-items:center;gap:12px;}
-  .qrtoggle{
-    background:none;border:none;font-family:inherit;cursor:pointer;color:var(--muted);
-    font-size:13px;letter-spacing:.02em;display:flex;align-items:center;gap:6px;padding:6px;
-  }
-  .qrtoggle:active{opacity:.6;}
-  .qrbox{display:none;padding:18px;background:#fff;border:1px solid var(--hair);border-radius:16px;}
-  .qrbox.show{display:block;}
+  .qrwrap{margin-top:24px;display:flex;flex-direction:column;align-items:center;gap:12px;}
+  .qrbox{padding:16px;background:#fff;border:1px solid var(--hair);border-radius:16px;}
   .qrbox img,.qrbox canvas{display:block;border-radius:4px;}
-  .qrcap{color:var(--muted);font-size:12px;text-align:center;display:none;}
-  .qrcap.show{display:block;}
+  .qrcap{color:var(--muted);font-size:12px;text-align:center;}
   @media (prefers-color-scheme:dark){
     :root{--ink:#f2f1ee;--muted:#9a9aa2;--hair:#2c2c30;--paper:#101012;--card:#1a1a1d;--accent:#4a7ba6;}
     .save{color:#fff;}
@@ -70,15 +72,20 @@
 </head>
 <body>
   <main class="card">
-    <img class="avatar" id="avatar" alt="Andrew Lamppa">
+    <div class="head">
+      <img class="avatar" id="avatar" alt="Andrew Lamppa">
+      <button class="share" id="share">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12v7a1 1 0 0 0 1 1h14a1 1 0 0 0 1-1v-7"/><path d="M16 6l-4-4-4 4"/><path d="M12 2v13"/></svg>
+        Text my card
+      </button>
+    </div>
     <h1 id="name">Your Name</h1>
     <p class="role" id="role"></p>
     <div class="rows" id="rows"></div>
     <button class="save" id="save">Add to Contacts</button>
     <div class="qrwrap">
-      <button class="qrtoggle" id="qrtoggle">&#9638;&nbsp; Show QR code</button>
       <div class="qrbox" id="qrbox"></div>
-      <div class="qrcap" id="qrcap">Point a camera here to open this card</div>
+      <div class="qrcap" id="qrcap">Scan to open this card</div>
     </div>
   </main>
 <script>
@@ -138,13 +145,15 @@ $("save").addEventListener("click",function(){
   document.body.appendChild(a);a.click();a.remove();
   setTimeout(function(){URL.revokeObjectURL(url);},1500);
 });
-let qrBuilt=false;
-$("qrtoggle").addEventListener("click",function(){
-  const box=$("qrbox"),cap=$("qrcap"),btn=$("qrtoggle");
-  if(!qrBuilt){new QRCode(box,{text:location.href,width:200,height:200,colorDark:"#16161a",colorLight:"#ffffff",correctLevel:QRCode.CorrectLevel.M});qrBuilt=true;}
-  const showing=box.classList.toggle("show");
-  cap.classList.toggle("show",showing);
-  btn.innerHTML=showing?"\u25A6&nbsp; Hide QR code":"\u25A6&nbsp; Show QR code";
+new QRCode($("qrbox"),{text:location.href,width:200,height:200,colorDark:"#16161a",colorLight:"#ffffff",correctLevel:QRCode.CorrectLevel.M});
+
+$("share").addEventListener("click",function(){
+  const url=location.href;
+  const text="Here's my contact card: "+url;
+  // Copy URL to clipboard (best-effort)
+  if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(url).catch(function(){});}
+  // Open Messages with the card link prefilled
+  window.location.href="sms:&body="+encodeURIComponent(text);
 });
 </script>
 </body>
