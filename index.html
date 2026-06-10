@@ -15,7 +15,7 @@
   body{
     font-family:-apple-system,BlinkMacSystemFont,"SF Pro Text","Helvetica Neue",sans-serif;
     background:var(--paper);color:var(--ink);
-    display:flex;align-items:center;justify-content:center;
+    display:flex;align-items:flex-start;justify-content:center;
     padding:24px;padding-top:max(24px,env(safe-area-inset-top));
     padding-bottom:max(24px,env(safe-area-inset-bottom));
     min-height:100vh;-webkit-font-smoothing:antialiased;
@@ -23,12 +23,12 @@
   .card{
     width:100%;max-width:380px;background:var(--card);
     border:1px solid var(--hair);border-radius:var(--r);
-    padding:40px 32px 32px;
+    padding:32px 30px 28px;
     box-shadow:0 1px 2px rgba(0,0,0,.03),0 12px 40px -12px rgba(0,0,0,.12);
   }
   .avatar{
-    width:96px;height:96px;border-radius:50%;object-fit:cover;
-    border:1px solid var(--hair);margin-bottom:22px;
+    width:84px;height:84px;border-radius:50%;object-fit:cover;
+    border:1px solid var(--hair);margin-bottom:16px;
   }
   .share{
     display:inline-flex;align-items:center;gap:7px;
@@ -40,11 +40,11 @@
   .share:active{opacity:.6;}
   .share svg{width:15px;height:15px;flex:none;}
   h1{font-size:28px;font-weight:600;letter-spacing:-.02em;line-height:1.1;margin-bottom:6px;}
-  .role{color:var(--muted);font-size:15px;line-height:1.4;margin-bottom:26px;}
+  .role{color:var(--muted);font-size:15px;line-height:1.4;margin-bottom:20px;}
   .role b{color:var(--ink);font-weight:500;}
-  .rows{border-top:1px solid var(--hair);margin-bottom:26px;}
+  .rows{border-top:1px solid var(--hair);margin-bottom:20px;}
   .row{
-    display:flex;align-items:center;gap:14px;padding:15px 2px;
+    display:flex;align-items:center;gap:14px;padding:13px 2px;
     border-bottom:1px solid var(--hair);text-decoration:none;color:inherit;
   }
   .row:active{opacity:.55;}
